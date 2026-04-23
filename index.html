@@ -6,29 +6,59 @@
     <title>helohavoc</title>
     <link rel="stylesheet" href="styles.css" />
     <style>
-      .home { text-align: center; padding: 48px 0; }
+      #content { padding: 24px 0; }
+      .home { text-align: center; }
       h1 { margin: 0 0 12px; font-size: 48px; }
       .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 24px; }
       .tile { display: block; padding: 18px; border-radius: 12px; background: #ffffff; color: #111; text-decoration: none; border: 1px solid #d0d0d8; }
-      .tile:hover { background: #ececf2; }
-          </style>
+            .tile:hover { background: #ececf2; }
+    </style>
   </head>
   <body>
-    <div class="shell home">
+    <div class="shell">
       <div class="nav">
         <a href="/mealplan/">Meal Plan</a>
         <a href="/dashboard/">Dashboard</a>
         <a href="/tools/">Tools</a>
         <a href="/rc/">RC</a>
       </div>
-      <h1>helohavoc</h1>
-      <p class="small">Pick a page and build the idea.</p>
-      <div class="grid">
-        <a class="tile" href="/mealplan/">Meal Plan</a>
-        <a class="tile" href="/dashboard/">Dashboard</a>
-                <a class="tile" href="/tools/">Tools</a>
-        <a class="tile" href="/rc/">RC</a>
-      </div>
+      <div id="content">Loading...</div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script>
+      const supabaseUrl = "https://qrjymlbdmbphntryfewv.supabase.co/rest/v1/";
+      const supabaseKey = "sb_publishable_g4v21yJyKokXhphJnGXu0g_U_nKPE6i";
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+      async function loadPage(slug) {
+        const { data, error } = await supabase
+          .from("pages")
+          .select("*")
+          .eq("slug", slug)
+          .single();
+
+        if (error || !data) {
+          document.getElementById("content").innerHTML = "<h1>Page not found</h1>";
+          return;
+          }
+
+        document.title = data.title;
+        document.getElementById("content").innerHTML = `
+          <div class="home">
+            <h1>${data.title}</h1>
+            <p class="small">${data.content}</p>
+            <div class="grid">
+              <a class="tile" href="/mealplan/">Meal Plan</a>
+              <a class="tile" href="/dashboard/">Dashboard</a>
+              <a class="tile" href="/tools/">Tools</a>
+              <a class="tile" href="/rc/">RC</a>
+            </div>
+          </div>
+        `;
+           }
+
+      loadPage("home");
+    </script>
   </body>
-</html>
+</html>   
