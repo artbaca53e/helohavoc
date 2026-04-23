@@ -6,43 +6,69 @@
     <title>Meal Plan</title>
     <link rel="stylesheet" href="/styles.css" />
     <style>
+      #content { padding: 24px 0; }
       textarea, input, button { width: 100%; box-sizing: border-box; margin-top: 8px; margin-bottom: 16px; padding: 12px; border-radius: 10px; border: 1px solid #d0d0d8; background: #fff; color: #111; }
       button { background: #ffffff; cursor: pointer; }
       .row { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-            pre { white-space: pre-wrap; background: #fff; padding: 16px; border-radius: 12px; border: 1px solid #d0d0d8; }
-    </style>
+      pre { white-space: pre-wrap; background: #fff; padding: 16px; border-radius: 12px; border: 1px solid #d0d0d8; }
+          </style>
   </head>
   <body>
     <div class="shell">
       <div class="nav">
         <a href="/">Home</a><a href="/mealplan/">Meal Plan</a><a href="/dashboard/">Dashboard</a><a href="/tools/">Tools</a><a href="/rc/">RC</a>
       </div>
-      <h1>Meal Plan Builder</h1>
-      <div class="row">
-        <div>
-          <label>Meal name</label>
-          <input id="name" placeholder="Chicken bowls" />
-        </div>
-        <div>
-                    <label>Goal</label>
-          <input id="goal" placeholder="Fat loss / high protein" />
-        </div>
-      </div>
-      <label>Ingredients</label>
-      <textarea id="ingredients" rows="6"></textarea>
-      <label>Instructions</label>
-      <textarea id="instructions" rows="8"></textarea>
-      <button onclick="preview()">Preview</button>
-      <pre id="out">Fill in the fields and click Preview.</pre>
+      <div id="content">Loading...</div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      function preview() {
+      const supabaseUrl = "YOUR_PROJECT_URL";
+      const supabaseKey = "YOUR_ANON_KEY";
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+            async function loadPage(slug) {
+        const { data, error } = await supabase
+          .from("pages")
+          .select("*")
+          .eq("slug", slug)
+          .single();
+
+        if (error || !data) {
+          document.getElementById("content").innerHTML = "<h1>Page not found</h1>";
+          return;
+        }
+
+        document.title = data.title;
+        document.getElementById("content").innerHTML = `
+                  <h1>${data.title}</h1>
+          <div class="row">
+            <div>
+              <label>Meal name</label>
+              <input id="name" placeholder="Chicken bowls" />
+            </div>
+            <div>
+              <label>Goal</label>
+              <input id="goal" placeholder="Fat loss / high protein" />
+            </div>
+          </div>
+          <label>Ingredients</label>
+          <textarea id="ingredients" rows="6"></textarea>
+          <label>Instructions</label>
+          <textarea id="instructions" rows="8"></textarea>
+                    <button onclick="preview()">Preview</button>
+          <pre id="out">${data.content}</pre>
+        `;
+      }
+
+      window.preview = function () {
         const name = document.getElementById('name').value || 'Untitled meal';
         const goal = document.getElementById('goal').value || 'No goal set';
-                const ingredients = document.getElementById('ingredients').value || 'None';
+        const ingredients = document.getElementById('ingredients').value || 'None';
         const instructions = document.getElementById('instructions').value || 'None';
         document.getElementById('out').textContent = `Meal: ${name}\nGoal: ${goal}\n\nIngredients:\n${ingredients}\n\nInstructions:\n${instructions}`;
       }
+
+      loadPage("mealplan");
     </script>
-  </body>
+      </body>
 </html>
