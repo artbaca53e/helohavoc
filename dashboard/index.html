@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+      .panel { background: #fff; border: 1px solid #d0d0d8; border-radius: 12px; padding: 16px; }
+    </style>
+  </head>
+    <body>
+    <div class="shell">
+      <div class="nav">
+        <a href="/">Home</a><a href="/mealplan/">Meal Plan</a><a href="/dashboard/">Dashboard</a><a href="/tools/">Tools</a><a href="/rc/">RC</a>
+      </div>
+      <h1>Dashboard</h1>
+      <div class="grid">
+        <div class="panel"><strong>Projects</strong><p class="small">Current build status</p></div>
+        <div class="panel"><strong>Tasks</strong><p class="small">What needs doing next</p></div>
+        <div class="panel"><strong>Notes</strong><p class="small">Quick reminders and context</p></div>
+      </div>
+    </div>
+  </body>
+</html>
