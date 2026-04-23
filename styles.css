@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 24px;
+  background: #ffffff;
+  color: #111;
+}
+
+.shell {
+  max-width: 1100px;
+  margin: 0 auto;
+    background: #f4f4f6;
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.nav a {
+  color: #111;
+  text-decoration: none;
+    background: #ffffff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d0d0d8;
+}
+
+.nav a:hover {
+  background: #ececf2;
+}
+
+.small {
+  color: #444;
+}
